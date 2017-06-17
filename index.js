@@ -12,7 +12,8 @@ const Joi = require('joi');
 const DB = require('./lib/db');
 const PREFIX = Buffer.from('vote.now', 'utf8');
 
-const HOME_PAGE = fs.readFileSync(path.join(__dirname, '/index.html'));
+const HOME_PAGE = fs.readFileSync(path.join(__dirname, 'index.html'));
+const SNIPPET = fs.readFileSync(path.join(__dirname, 'dist', 'snippet.js'));
 const COMPLEXITY = 20;
 
 function App() {
@@ -36,7 +37,8 @@ function App() {
 
 const CORS_HEADERS = [
   { key: 'Access-Control-Allow-Origin', value: '*' },
-  { key: 'Access-Control-Allow-Methods', value: 'GET, PUT' }
+  { key: 'Access-Control-Allow-Methods', value: 'GET, PUT' },
+  { key: 'Access-Control-Allow-Headers', value: 'Content-Type' }
 ];
 
 App.prototype.setCORSHeaders = function setCORSHeaders(res) {
@@ -47,7 +49,11 @@ App.prototype.dispatch = function dispatch() {
   return microDispatch()
       .dispatch('*', 'OPTIONS', (req, res) => this.serveCORS(req, res))
       .dispatch('/', 'GET', (req, res) => this.serveHome(req, res))
+      .dispatch('/dist/snippet.js', 'GET', (req, res) => {
+        return this.serveSnippet(req, res);
+      })
       .dispatch('/api/v1/', 'GET', (req, res) => {
+        this.setCORSHeaders(res);
         return {
           prefix: PREFIX.toString('hex'),
           complexity: COMPLEXITY,
@@ -83,6 +89,11 @@ App.prototype.serveCORS = function serveCORS(req, res) {
 App.prototype.serveHome = function serveHome(req, res) {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end(HOME_PAGE);
+};
+
+App.prototype.serveSnippet = function serveSnippet(req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/javascript' });
+  res.end(SNIPPET);
 };
 
 App.prototype.getVotes = async function getVotes(id) {

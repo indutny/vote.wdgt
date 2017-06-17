@@ -20,6 +20,12 @@
       </p>
     </section>
 
+    <section>
+      Demo (click to vote): <button id=snippet data-vote-id=vote-now></button>
+    </section>
+
+    <script src="/dist/snippet.js"></script>
+
     <script>
       !function() {
         'use strict';
@@ -33,6 +39,8 @@
           set('prefix', json.prefix);
           set('endpoints', JSON.stringify(json.endpoints, null, 2));
         });
+
+        VoteNow('snippet');
       }();
     </script>
   </body>
