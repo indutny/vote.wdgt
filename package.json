@@ -1,0 +1,20 @@
+{
+  "name": "vote.now",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public voting API",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro"
+  },
+  "keywords": [],
+  "author": "Fedor Indutny <fedor@indutny.com> (http://darksi.de/)",
+  "license": "MIT",
+  "dependencies": {
+    "joi": "^10.6.0",
+    "micro": "^7.3.3",
+    "micro-route": "^2.4.0",
+    "proof-of-work": "^2.0.0",
+    "redis": "^2.7.1"
+  }
+}

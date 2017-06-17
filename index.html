@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>vote.now</title>
+  </head>
+
+  <body>
+    <h1>vote.now</h1>
+
+    <section>
+      <p>
+        Complexity: <span id=complexity></span>
+      </p>
+      <p>
+        Prefix: <span id=prefix></span>
+      </p>
+      <p>
+        Endpoints:<br/>
+        <textarea id=endpoints></textarea>
+      </p>
+    </section>
+
+    <script>
+      !function() {
+        'use strict';
+
+        function set(id, value) {
+          document.getElementById(id).textContent = value;
+        }
+
+        fetch('/api/v1/').then(res => res.json()).then((json) => {
+          set('complexity', json.complexity);
+          set('prefix', json.prefix);
+          set('endpoints', JSON.stringify(json.endpoints, null, 2));
+        });
+      }();
+    </script>
+  </body>
+</html>
