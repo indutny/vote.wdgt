@@ -35,6 +35,7 @@ function Snippet(id) {
 module.exports = Snippet;
 
 Snippet.prototype._init = function _init() {
+  this._elem.classList.add('votenow');
   this._elem.classList.add('votenow-loading');
 
   let waiting = 2;
