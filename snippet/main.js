@@ -89,7 +89,10 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
     this._elem.classList.remove('votenow-voting');
     this._elem.classList.add('votenow-voted');
 
-    this._elem.textContent = json.votes;
+    if (json.error)
+      this._elem.classList.add('votenow-error');
+    else
+      this._elem.textContent = json.votes;
   });
 };
 
