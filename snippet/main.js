@@ -59,11 +59,7 @@ Snippet.prototype._init = function _init() {
   state.elem.disabled = true;
   state.elem.classList.add('votenow-loading');
 
-  let waiting = 2;
   const ready = () => {
-    if (--waiting !== 0)
-      return;
-
     state.elem.classList.remove('votenow-loading');
     state.elem.classList.add('votenow-ready');
     if (!state.voted)
@@ -72,16 +68,11 @@ Snippet.prototype._init = function _init() {
     state.ready = true;
   };
 
-  // Load params
-  fetch(API_URL + '/').then(res => res.json()).then((json) => {
-    state.params = { complexity: json.complexity, prefix: json.prefix };
-    ready();
-  });
-
   // Load votes
   fetch(API_URL + '/vote/' + encodeURIComponent(state.id)).then((res) => {
     return res.json();
   }).then((json) => {
+    state.params = { complexity: json.complexity, prefix: json.prefix };
     state.elem.textContent = json.votes;
     ready();
   });

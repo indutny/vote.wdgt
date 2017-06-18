@@ -11,6 +11,7 @@ const Joi = require('joi');
 
 const DB = require('./lib/db');
 const PREFIX = Buffer.from('vote.now', 'utf8');
+const HEX_PREFIX = PREFIX.toString('hex');
 
 const COMPLEXITY = 20;
 
@@ -52,7 +53,7 @@ App.prototype.dispatch = function dispatch() {
       .dispatch('/api/v1/', 'GET', (req, res) => {
         this.setCORSHeaders(res);
         return {
-          prefix: PREFIX.toString('hex'),
+          prefix: HEX_PREFIX,
           complexity: COMPLEXITY,
           endpoints: {
             '/api/v1/': { method: 'GET' },
@@ -99,7 +100,11 @@ App.prototype.serveHome = function serveHome(req, res) {
 };
 
 App.prototype.getVotes = async function getVotes(id) {
-  return { votes: await this.db.get(id) };
+  return {
+    votes: await this.db.get(id),
+    prefix: HEX_PREFIX,
+    complexity: COMPLEXITY
+  };
 };
 
 const VOTE = Joi.object().keys({
