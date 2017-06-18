@@ -31,7 +31,7 @@ function App() {
 
   setInterval(() => {
     this.verifier.reset();
-  }, VALIDITY / 2);
+  }, 2 * VALIDITY);
 
   this.db = new DB(process.env.DB);
 }
