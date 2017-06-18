@@ -40,6 +40,8 @@ each describing particular state of it:
 * `.votenow-voted` - Vote casted, or voted before
 * `.votenow-error` - Some unexpected server error
 
+A collection of user-supplied styles is available [on this wiki page][3]
+
 ## Proof-of-Work
 
 The backend API for these widgets uses [proof-of-work][1] JavaScript module for
@@ -81,3 +83,4 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 [0]: https://github.com/indutny/vote.now/issues
 [1]: https://github.com/indutny/proof-of-work#technique
 [2]: https://indutny.github.io/vote.now/#availability
+[3]: https://github.com/indutny/vote.now/wiki/User-Styles
