@@ -10,7 +10,9 @@ function Snippet(id) {
   if (!(this instanceof Snippet))
     return new Snippet(id);
 
-  this._elem = document.getElementById(id);
+  this._elem = typeof id === 'string' ?
+      document.getElementById(id) :
+      id;
   this._id = this._elem.dataset.voteId ||
              hash.sha256().update(document.location.href.replace(/#.*$/, ''))
                           .digest('hex');
@@ -99,3 +101,6 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
 // Expose
 if (typeof window !== 'undefined')
   window.VoteNow = Snippet;
+
+if (typeof document !== 'undefined')
+  document.querySelectorAll('.votenow').forEach(elem => new VoteNow(elem));
