@@ -5,6 +5,7 @@ const hash = require('hash.js');
 const WORKER_SOURCE = require('raw-loader!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.now.sh/api/v1';
+const STORAGE_PREFIX = 'votenow/v1/';
 
 function Snippet(id) {
   if (!(this instanceof Snippet))
@@ -64,6 +65,14 @@ Snippet.prototype._init = function _init() {
     this._elem.textContent = json.votes;
     ready();
   });
+
+  // Check if we voted already
+  if (typeof localStorage !== 'undefined' &&
+      localStorage.getItem(STORAGE_PREFIX + this._id)) {
+    this._voted = true;
+    this._elem.disabled = true;
+    this._elem.classList.add('votenow-voted');
+  }
 };
 
 Snippet.prototype._vote = function _vote() {
@@ -73,6 +82,7 @@ Snippet.prototype._vote = function _vote() {
   this._elem.disabled = true;
 
   this._elem.classList.add('votenow-computing');
+  this._elem.textContent = (this._elem.textContent >>> 0) + 1;
   this._worker.postMessage(this._params);
 };
 
@@ -90,6 +100,8 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
   }).then(res => res.json()).then((json) => {
     this._elem.classList.remove('votenow-voting');
     this._elem.classList.add('votenow-voted');
+    if (typeof localStorage !== 'undefined')
+      localStorage.setItem(STORAGE_PREFIX + this._id, true);
 
     if (json.error)
       this._elem.classList.add('votenow-error');
@@ -103,4 +115,4 @@ if (typeof window !== 'undefined')
   window.VoteNow = Snippet;
 
 if (typeof document !== 'undefined')
-  document.querySelectorAll('.votenow').forEach(elem => new VoteNow(elem));
+  document.querySelectorAll('.votenow').forEach(elem => new Snippet(elem));

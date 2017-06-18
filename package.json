@@ -16,7 +16,7 @@
     "joi": "^10.6.0",
     "micro": "^7.3.3",
     "micro-route": "^2.4.0",
-    "proof-of-work": "^3.0.0",
+    "proof-of-work": "^3.0.1",
     "redis": "^2.7.1"
   },
   "devDependencies": {
