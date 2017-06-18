@@ -16,6 +16,8 @@ const HOME_PAGE = fs.readFileSync(path.join(__dirname, 'index.html'));
 const SNIPPET = fs.readFileSync(path.join(__dirname, 'dist', 'snippet.js'));
 const COMPLEXITY = 20;
 
+const MAX_ID_LENGTH = 64;
+
 function App() {
   const VALIDITY = 60000;
 
@@ -68,10 +70,14 @@ App.prototype.dispatch = function dispatch() {
       })
       .dispatch('/api/v1/vote/:id', 'GET', async (req, res, { params }) => {
         this.setCORSHeaders(res);
+        if (params.id.length > MAX_ID_LENGTH)
+          return { error: 'id overflow' };
         return await this.getVotes(params.id);
       })
       .dispatch('/api/v1/vote/:id', 'PUT', async (req, res, { params }) => {
         this.setCORSHeaders(res);
+        if (params.id.length > MAX_ID_LENGTH)
+          return { error: 'id overflow' };
         const body = await json(req);
         return this.vote(params.id, body);
       })
