@@ -1,6 +1,6 @@
 # vote.now
 
-Public API for fancy Vote Counting widgets.
+Free Proof-of-Work API for fancy Vote Counting widgets.
 
 ## Demonstration & Embedding
 
