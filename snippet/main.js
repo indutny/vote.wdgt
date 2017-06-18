@@ -11,7 +11,8 @@ function Snippet(id) {
 
   const state = {
     elem: typeof id === 'string' ? document.getElementById(id) : id,
-    uri: document.location.href.replace(/#.*$/, ''),
+    uri: 'https://' + document.location.host + document.location.pathname +
+         document.location.search,
     id: null,
     worker: null,
     voted: false,
