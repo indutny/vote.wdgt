@@ -2,6 +2,10 @@
 
 Public API for fancy Vote Counting fancy widgets.
 
+## Demonstration
+
+<button class=votenow>?</button>
+
 ## Deployment
 
 ```sh
