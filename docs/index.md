@@ -2,17 +2,9 @@
 
 Public API for fancy Vote Counting widgets.
 
-## Demonstration & Embedding
+## Demonstration
 
-See [website][0] for a demonstration and embedding guide.
-
-## Deployment
-
-```sh
-npm i -g now
-now secrets add vote-db "redis://host/?password=<pass>"
-now -e DB=@vote-db
-```
+<button class="votenow">?</button>
 
 ## LICENSE
 
@@ -38,5 +30,3 @@ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[0]: https://indutny.github.io/vote.now/
