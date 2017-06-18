@@ -1,7 +1,5 @@
 'use strict';
 
-const hash = require('hash.js');
-
 const WORKER_SOURCE = require('raw-loader!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.now.sh/api/v1';
@@ -11,26 +9,36 @@ function Snippet(id) {
   if (!(this instanceof Snippet))
     return new Snippet(id);
 
-  this._elem = typeof id === 'string' ?
-      document.getElementById(id) :
-      id;
-  this._id = this._elem.dataset.voteId ||
-             hash.sha256().update(document.location.href.replace(/#.*$/, ''))
-                          .digest('hex');
+  const state = {
+    elem: typeof id === 'string' ? document.getElementById(id) : id,
+    uri: document.location.href.replace(/#.*$/, ''),
+    id: null,
+    worker: null,
+    voted: false,
+    ready: false,
+    params: null
+  };
+  this._state = state;
+
+  state.id = state.elem.dataset.voteId;
 
   const data = new Blob([ WORKER_SOURCE ], { type: 'text/javascript' });
 
-  if (typeof Worker !== 'undefined') {
-    this._worker = new Worker(window.URL.createObjectURL(data));
-    this._worker.onmessage = e => this._onNonce(e.data);
-  }
+  state.worker = new Worker(window.URL.createObjectURL(data));
+  state.worker.onmessage = (e) => {
+    const msg = e.data;
+    const type = msg.type;
+    const payload = msg.payload;
 
-  this._voted = false;
-  this._ready = false;
-  this._params = null;
+    if (type === 'id')
+      this._onID(payload);
+    else if (type === 'nonce')
+      this._onNonce(payload);
+  };
+
   this._init();
 
-  this._elem.onclick = (e) => {
+  state.elem.onclick = (e) => {
     e.preventDefault();
     this._vote();
   };
@@ -38,62 +46,79 @@ function Snippet(id) {
 module.exports = Snippet;
 
 Snippet.prototype._init = function _init() {
-  this._elem.classList.add('votenow');
-  this._elem.disabled = true;
-  this._elem.classList.add('votenow-loading');
+  const state = this._state;
+
+  // Compute id asynchronously
+  if (!state.id) {
+    state.worker.postMessage({ type: 'id', payload: state.uri });
+    return;
+  }
+
+  state.elem.classList.add('votenow');
+
+  state.elem.disabled = true;
+  state.elem.classList.add('votenow-loading');
 
   let waiting = 2;
   const ready = () => {
     if (--waiting !== 0)
       return;
 
-    this._elem.classList.remove('votenow-loading');
-    this._elem.classList.add('votenow-ready');
-    if (!this._voted)
-      this._elem.disabled = false;
+    state.elem.classList.remove('votenow-loading');
+    state.elem.classList.add('votenow-ready');
+    if (!state.voted)
+      state.elem.disabled = false;
 
-    this._ready = true;
+    state.ready = true;
   };
 
   // Load params
   fetch(API_URL + '/').then(res => res.json()).then((json) => {
-    this._params = { complexity: json.complexity, prefix: json.prefix };
+    state.params = { complexity: json.complexity, prefix: json.prefix };
     ready();
   });
 
   // Load votes
-  fetch(API_URL + '/vote/' + encodeURIComponent(this._id)).then((res) => {
+  fetch(API_URL + '/vote/' + encodeURIComponent(state.id)).then((res) => {
     return res.json();
   }).then((json) => {
-    this._elem.textContent = json.votes;
+    state.elem.textContent = json.votes;
     ready();
   });
 
   // Check if we voted already
   if (typeof localStorage !== 'undefined' &&
-      localStorage.getItem(STORAGE_PREFIX + this._id)) {
-    this._voted = true;
-    this._elem.disabled = true;
-    this._elem.classList.add('votenow-voted');
+      localStorage.getItem(STORAGE_PREFIX + state.id)) {
+    state.voted = true;
+    state.elem.disabled = true;
+    state.elem.classList.add('votenow-voted');
   }
 };
 
 Snippet.prototype._vote = function _vote() {
-  if (this._voted || !this._ready)
+  const state = this._state;
+  if (state.voted || !state.ready)
     return;
-  this._voted = true;
-  this._elem.disabled = true;
+  state.voted = true;
+  state.elem.disabled = true;
 
-  this._elem.classList.add('votenow-computing');
-  this._elem.textContent = (this._elem.textContent >>> 0) + 1;
-  this._worker.postMessage(this._params);
+  state.elem.classList.add('votenow-computing');
+  state.elem.textContent = (state.elem.textContent >>> 0) + 1;
+  state.worker.postMessage({ type: 'nonce', payload: state.params });
+};
+
+Snippet.prototype._onID = function _onID(id) {
+  this._state.id = id;
+  this._init();
 };
 
 Snippet.prototype._onNonce = function _onNonce(nonce) {
-  this._elem.classList.remove('votenow-computing');
-  this._elem.classList.add('votenow-voting');
+  const state = this._state;
 
-  const uri = API_URL + '/vote/' + encodeURIComponent(this._id);
+  state.elem.classList.remove('votenow-computing');
+  state.elem.classList.add('votenow-voting');
+
+  const uri = API_URL + '/vote/' + encodeURIComponent(state.id);
   fetch(uri, {
     method: 'PUT',
     headers: {
@@ -101,15 +126,15 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
     },
     body: JSON.stringify({ nonce })
   }).then(res => res.json()).then((json) => {
-    this._elem.classList.remove('votenow-voting');
-    this._elem.classList.add('votenow-voted');
+    state.elem.classList.remove('votenow-voting');
+    state.elem.classList.add('votenow-voted');
     if (typeof localStorage !== 'undefined')
-      localStorage.setItem(STORAGE_PREFIX + this._id, true);
+      localStorage.setItem(STORAGE_PREFIX + state.id, true);
 
     if (json.error)
-      this._elem.classList.add('votenow-error');
+      state.elem.classList.add('votenow-error');
     else
-      this._elem.textContent = json.votes;
+      state.elem.textContent = json.votes;
   });
 };
 
