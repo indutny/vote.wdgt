@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "joi": "^10.6.0",
+    "lru-cache": "^4.1.1",
     "micro": "^7.3.3",
     "micro-route": "^2.4.0",
     "proof-of-work": "^3.0.1",
