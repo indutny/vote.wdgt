@@ -40,7 +40,7 @@ each describing particular state of it:
 * `.votenow-voted` - Vote casted, or voted before
 * `.votenow-error` - Some unexpected server error
 
-A collection of user-supplied styles is available [on this wiki page][3]
+A collection of user-supplied styles is available [on this wiki page][3].
 
 ## Proof-of-Work
 
