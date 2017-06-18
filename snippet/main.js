@@ -49,7 +49,8 @@ Snippet.prototype._init = function _init() {
 
     this._elem.classList.remove('votenow-loading');
     this._elem.classList.add('votenow-ready');
-    this._elem.disabled = false;
+    if (!this._voted)
+      this._elem.disabled = false;
 
     this._ready = true;
   };
