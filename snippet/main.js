@@ -1,5 +1,7 @@
 'use strict';
 
+const hash = require('hash.js');
+
 const WORKER_SOURCE = require('raw-loader!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.now.sh/api/v1';
@@ -9,7 +11,9 @@ function Snippet(id) {
     return new Snippet(id);
 
   this._elem = document.getElementById(id);
-  this._id = this._elem.dataset.voteId;
+  this._id = this._elem.dataset.voteId ||
+             hash.sha256().update(document.location.href.replace(/#.*$/, ''))
+                          .digest('hex');
 
   const data = new Blob([ WORKER_SOURCE ], { type: 'text/javascript' });
 
