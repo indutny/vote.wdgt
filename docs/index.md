@@ -17,9 +17,9 @@ Click the button below:
 
 ## Use-cases
 
-votw.now widgets are completely free of use (_see `Availability` below_). When
-embedded on the website they will show vote count for the current page. Widgets
-can be inserted to:
+votw.now widgets are completely free of use (_see [Availability][2] below_).
+When embedded on the website they will show vote count for the current page.
+Widgets can be inserted into:
 
 * gh-pages
 * Blog posts
@@ -80,3 +80,4 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [0]: https://github.com/indutny/vote.now/issues
 [1]: https://github.com/indutny/proof-of-work#technique
+[2]: https://indutny.github.io/vote.now/#availability

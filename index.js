@@ -12,7 +12,6 @@ const Joi = require('joi');
 const DB = require('./lib/db');
 const PREFIX = Buffer.from('vote.now', 'utf8');
 
-const HOME_PAGE = fs.readFileSync(path.join(__dirname, 'index.html'));
 const COMPLEXITY = 20;
 
 const MAX_ID_LENGTH = 64;
@@ -37,9 +36,9 @@ function App() {
 }
 
 const CORS_HEADERS = [
-  { key: 'Access-Control-Allow-Origin', value: '*' },
-  { key: 'Access-Control-Allow-Methods', value: 'GET, PUT' },
-  { key: 'Access-Control-Allow-Headers', value: 'Content-Type' }
+  { key: 'access-control-allow-origin', value: '*' },
+  { key: 'access-control-allow-methods', value: 'GET, PUT' },
+  { key: 'access-control-allow-headers', value: 'content-type' }
 ];
 
 App.prototype.setCORSHeaders = function setCORSHeaders(res) {
@@ -83,14 +82,20 @@ App.prototype.dispatch = function dispatch() {
 App.prototype.serveCORS = function serveCORS(req, res) {
   this.setCORSHeaders(res);
   res.writeHead(200, {
-    'Content-Length': 0
+    'content-length': 0
   });
   res.end();
 };
 
 App.prototype.serveHome = function serveHome(req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(HOME_PAGE);
+  res.writeHead(301, {
+    location: 'https://indutny.github.io/vote.now/',
+    'content-type': 'text/html'
+  });
+  res.end(`Redirecting to
+          <a href="https://indutny.github.io/vote.now/">
+            https://indutny.github.io/vote.now/
+          </a>`);
 };
 
 App.prototype.getVotes = async function getVotes(id) {
