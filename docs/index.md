@@ -6,6 +6,13 @@ Public API for fancy Vote Counting widgets.
 
 <button class="votenow">?</button>
 
+## Embedding
+
+```html
+<button class="votenow">?</button>
+<script src="https://cdn.rawgit.com/indutny/vote.now/v1.0.2/dist/snippet.js" async></script>
+```
+
 ## LICENSE
 
 This software is licensed under the MIT License.
