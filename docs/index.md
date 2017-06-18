@@ -1,6 +1,61 @@
+<style>
+  @keyframes vote-loading {
+    from {
+      border: 1px solid #eee;
+      box-shadow: 0 0 0 rgba(21, 87, 153, 0.0);
+    }
+
+    to {
+      border: 1px solid #aaa;
+      box-shadow: 0 0 8px rgba(21, 87, 153, 0.6);
+    }
+  }
+
+  .votenow {
+    display: block;
+    margin: 8px auto 0 auto;
+    text-align: center;
+    width: 96px;
+    height: 96px;
+    border: 1px solid #aaa;
+    border-radius: 0.3rem;
+    transition: border 1s;
+    background: #eee;
+    color: #333;
+    font-size: 24px;
+  }
+
+  .votenow.votenow-loading,
+  .votenow.votenow-computing,
+  .votenow.votenow-voting {
+    animation-name: vote-loading;
+    animation-direction: alternate;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+  }
+
+  .votenow.votenow-ready:not(:disabled):hover:after {
+    font-weight: bold;
+    content: ' +1';
+  }
+
+  .votenow.votenow-voting {
+    border: 1px solid #333;
+  }
+
+  .votenow.votenow-voted {
+    border: 1px solid #333;
+  }
+</style>
+
 # vote.now
 
 Public API for fancy Vote Counting fancy widgets.
+
+## Example
+
+<button class=votenow>?</button>
+<script src="https://cdn.rawgit.com/indutny/vote.now/v1.0.2/dist/snippet.js" async></script>
 
 ## Deployment
 
