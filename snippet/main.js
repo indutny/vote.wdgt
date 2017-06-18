@@ -39,6 +39,7 @@ module.exports = Snippet;
 
 Snippet.prototype._init = function _init() {
   this._elem.classList.add('votenow');
+  this._elem.disabled = true;
   this._elem.classList.add('votenow-loading');
 
   let waiting = 2;
@@ -48,6 +49,7 @@ Snippet.prototype._init = function _init() {
 
     this._elem.classList.remove('votenow-loading');
     this._elem.classList.add('votenow-ready');
+    this._elem.disabled = false;
 
     this._ready = true;
   };
