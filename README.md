@@ -1,4 +1,5 @@
 # vote.now
+[![Build Status](https://secure.travis-ci.org/indutny/vote.now.png)](http://travis-ci.org/indutny/vote.now)
 
 Free Proof-of-Work API for fancy Vote Counting widgets.
 
