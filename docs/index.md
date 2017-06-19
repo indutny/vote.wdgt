@@ -17,7 +17,7 @@ Click the button below:
 
 ## Use-cases
 
-votw.now widgets are completely free of use (_see [Availability][2] below_).
+vote.now widgets are completely free of use (_see [Availability][2] below_).
 When embedded on the website they will show vote count for the current page.
 Widgets can be inserted into:
 
