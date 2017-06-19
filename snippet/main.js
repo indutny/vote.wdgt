@@ -135,4 +135,4 @@ if (typeof window !== 'undefined')
   window.VoteNow = Snippet;
 
 if (typeof document !== 'undefined')
-  document.querySelectorAll('.votenow').forEach(elem => new Snippet(elem));
+  Array.prototype.slice.call(document.querySelectorAll('.votenow')).forEach(elem => new Snippet(elem));
