@@ -5,7 +5,7 @@
   "description": "Public voting API",
   "main": "lib/vote.js",
   "scripts": {
-    "start": "micro",
+    "start": "micro server.js",
     "test": "ava",
     "snippet-build": "webpack --progress --colors -p",
     "snippet-watch": "webpack --progress --colors --watch"
