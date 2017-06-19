@@ -1,6 +1,7 @@
 'use strict';
 
-const WORKER_SOURCE = require('raw-loader!../dist/snippet-worker.js');
+const WORKER_SOURCE =
+    require('raw-loader!uglify-loader!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.now.sh/api/v1';
 const STORAGE_PREFIX = 'votenow/v1/';
