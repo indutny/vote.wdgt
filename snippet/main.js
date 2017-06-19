@@ -134,5 +134,7 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
 if (typeof window !== 'undefined')
   window.VoteNow = Snippet;
 
-if (typeof document !== 'undefined')
-  document.querySelectorAll('.votenow').forEach(elem => new Snippet(elem));
+if (typeof document !== 'undefined') {
+  const elems = document.querySelectorAll('.votenow');
+  Array.prototype.slice.call(elems).forEach(elem => new Snippet(elem));
+}
