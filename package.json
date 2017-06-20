@@ -1,6 +1,6 @@
 {
   "name": "vote.now",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": true,
   "description": "Public voting API",
   "main": "lib/vote.js",
