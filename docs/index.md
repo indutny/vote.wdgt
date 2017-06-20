@@ -12,7 +12,7 @@ Click the button below:
 
 ```html
 <button class="votenow">?</button>
-<script src="https://cdn.rawgit.com/indutny/vote.now/v1.0.8/dist/snippet.js" async></script>
+<script src="https://cdn.rawgit.com/indutny/vote.now/v1.0.9/dist/snippet.js" async></script>
 ```
 
 ## Use-cases
