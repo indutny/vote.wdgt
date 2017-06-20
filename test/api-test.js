@@ -9,6 +9,8 @@ const Buffer = require('buffer').Buffer;
 
 const CONFIG = require('../config.json');
 
+process.env.CLOUDFRONT_TOKEN = 'token';
+
 const vote = require('../');
 const app = new vote.App(Object.assign({
   db: new vote.MemoryDB()
@@ -173,5 +175,53 @@ test('/api/v1/vote/:id', async (t) => {
       complexity: CONFIG.complexity,
       votes: 1
     }, 'correct GET response');
+  }
+});
+
+test('/cdn/*', async (t) => {
+  const url = await listen(micro(app));
+  const headers = {
+    'x-cloudfront-token': process.env.CLOUDFRONT_TOKEN
+  };
+
+  {
+    const body = await request(url + '/cdn/snippet.js', { json: true });
+
+    t.deepEqual(body, { error: 'Invalid token' },
+      'should not reply when token is invalid');
+  }
+
+  {
+    const body = await request(url + '/cdn/snippet.js', {
+      headers
+    });
+
+    t.is(typeof body, 'string', 'should give string body');
+    t.truthy(body.length > 0, 'should give non-empty body');
+  }
+
+  {
+    const body = await request(url + '/cdn/snippet.js', {
+      method: 'HEAD',
+      headers
+    });
+
+    t.is(body['content-type'], 'application/javascript;charset=utf-8');
+  }
+
+  {
+    const err = await t.throws(request(url + '/cdn/not-found.js', {
+      headers
+    }));
+
+    t.is(err.statusCode, 404, '404');
+  }
+
+  {
+    const err = await t.throws(request(url + '/cdn/not-found.js', {
+      headers
+    }));
+
+    t.is(err.statusCode, 404, '404');
   }
 });
