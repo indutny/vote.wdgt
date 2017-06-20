@@ -43,9 +43,9 @@ test('/api/v1/', async (t) => {
 
 test('/invalid/endpoint/', async (t) => {
   const url = await listen(micro(app));
-  const body = await request(url + '/invalid/endpoint', { json: true });
+  const err = await t.throws(request(url + '/invalid/endpoint'));
 
-  t.deepEqual(body, { error: 'Invalid endpoint' });
+  t.is(err.statusCode, 404);
 });
 
 test('/api/v1/vote/:id', async (t) => {
