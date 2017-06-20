@@ -23,7 +23,7 @@ test('homepage redirect', async (t) => {
   const err = await t.throws(request(url, { followRedirect: false }));
   t.is(err.statusCode, 301, 'status code');
   t.is(err.response.headers.location, 'https://indutny.github.io/vote.now/',
-       'location header');
+    'location header');
 });
 
 test('/api/v1/', async (t) => {
@@ -134,8 +134,9 @@ test('/api/v1/vote/:id', async (t) => {
   {
     const solver = new pow.Solver();
 
-    const nonce = solver.solve(CONFIG.complexity,
-                               Buffer.from(CONFIG.prefix, 'hex'));
+    const nonce = solver.solve(
+      CONFIG.complexity,
+      Buffer.from(CONFIG.prefix, 'hex'));
 
     const body = await request(url, {
       method: 'PUT',

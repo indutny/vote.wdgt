@@ -1,4 +1,5 @@
 'use strict';
+/* global postMessage */
 
 const hash = require('hash.js');
 const Solver = require('proof-of-work/lib/pow/solver');
@@ -45,6 +46,7 @@ function toHEX(buf) {
   return res;
 }
 
+/* eslint-disable no-unused-vars, no-undef */
 onmessage = (e) => {
   const msg = e.data;
   const type = msg.type;
@@ -63,3 +65,4 @@ onmessage = (e) => {
     });
   }
 };
+/* eslint-enable no-unused-vars, no-undef */

@@ -1,10 +1,48 @@
 'use strict';
+/* global document window XMLHttpRequest Blob localStorage Worker */
 
 const WORKER_SOURCE =
     require('raw-loader!uglify-loader!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.now.sh/api/v1';
 const STORAGE_PREFIX = 'votenow/v1/';
+
+function api(path, body, callback) {
+  const req = new XMLHttpRequest();
+
+  if (typeof body !== 'function') {
+    req.open('PUT', API_URL + path, true);
+
+    body = JSON.stringify(body);
+    req.setRequestHeader('content-type', 'application/json');
+  } else {
+    req.open('GET', API_URL + path, true);
+
+    callback = body;
+    body = false;
+  }
+
+  req.onreadystatechange = () => {
+    if (req.readyState !== XMLHttpRequest.DONE)
+      return;
+
+    let json;
+    try {
+      json = JSON.parse(req.responseText);
+    } catch (e) {
+      return callback(e);
+    }
+
+    const err = (req.status < 200 || req.status >= 400) ?
+      new Error('Bad HTTP status: ' + req.status) : null;
+    callback(err, json);
+  };
+
+  if (body)
+    req.send(body);
+  else
+    req.send();
+}
 
 function Snippet(id) {
   if (!(this instanceof Snippet))
@@ -61,22 +99,24 @@ Snippet.prototype._init = function _init() {
   state.elem.disabled = true;
   state.elem.classList.add('votenow-loading');
 
-  const ready = () => {
+  // Load votes
+  api('/vote/' + encodeURIComponent(state.id), (err, json) => {
     state.elem.classList.remove('votenow-loading');
+
+    if (err)
+      return this._error(err);
+
+    if (json.error)
+      return this._error(json.error);
+
+    state.params = { complexity: json.complexity, prefix: json.prefix };
+    state.elem.textContent = json.votes;
+
     state.elem.classList.add('votenow-ready');
     if (!state.voted)
       state.elem.disabled = false;
 
     state.ready = true;
-  };
-
-  // Load votes
-  fetch(API_URL + '/vote/' + encodeURIComponent(state.id)).then((res) => {
-    return res.json();
-  }).then((json) => {
-    state.params = { complexity: json.complexity, prefix: json.prefix };
-    state.elem.textContent = json.votes;
-    ready();
   });
 
   // Check if we voted already
@@ -111,24 +151,30 @@ Snippet.prototype._onNonce = function _onNonce(nonce) {
   state.elem.classList.remove('votenow-computing');
   state.elem.classList.add('votenow-voting');
 
-  const uri = API_URL + '/vote/' + encodeURIComponent(state.id);
-  fetch(uri, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ nonce })
-  }).then(res => res.json()).then((json) => {
+  api('/vote/' + encodeURIComponent(state.id), { nonce }, (err, json) => {
     state.elem.classList.remove('votenow-voting');
+    if (err)
+      return this._error(err);
+
     state.elem.classList.add('votenow-voted');
     if (typeof localStorage !== 'undefined')
       localStorage.setItem(STORAGE_PREFIX + state.id, true);
 
     if (json.error)
-      state.elem.classList.add('votenow-error');
+      return this._error(json.error);
     else
       state.elem.textContent = json.votes;
   });
+};
+
+Snippet.prototype._error = function _error(err) {
+  const state = this._state;
+
+  state.elem.classList.add('votenow-error');
+  /* eslint-disable no-console */
+  if (typeof console === 'object' && console.error)
+    console.error(err);
+  /* eslint-enable no-console */
 };
 
 // Expose

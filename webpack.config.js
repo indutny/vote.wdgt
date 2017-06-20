@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const webpack = require('webpack');
 
 const DIST = path.join(__dirname, 'dist');
 const SNIPPET = path.join(__dirname, 'snippet');
@@ -24,7 +23,7 @@ module.exports = [{
     loaders
   }
 }, {
-  entry: [ 'whatwg-fetch', path.join(SNIPPET, 'main.js') ],
+  entry: [ path.join(SNIPPET, 'main.js') ],
   output: {
     path: DIST,
     filename: 'snippet.js'
