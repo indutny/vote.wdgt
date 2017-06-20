@@ -1,7 +1,7 @@
 'use strict';
 /* global postMessage */
 
-const hash = require('hash.js');
+const sha256 = require('hash.js/lib/hash/sha/256');
 const Solver = require('proof-of-work/lib/pow/solver');
 
 const solver = new Solver();
@@ -55,7 +55,7 @@ onmessage = (e) => {
   if (type === 'id') {
     postMessage({
       type: 'id',
-      payload: hash.sha256().update(payload).digest('hex')
+      payload: sha256().update(payload).digest('hex')
     });
   } else if (type === 'nonce') {
     const nonce = solver.solve(payload.complexity, fromHEX(payload.prefix));

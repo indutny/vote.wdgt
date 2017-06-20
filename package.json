@@ -15,11 +15,12 @@
   "author": "Fedor Indutny <fedor@indutny.com> (http://darksi.de/)",
   "license": "MIT",
   "dependencies": {
+    "hash.js": "^1.1.0",
     "joi": "^10.6.0",
     "lru-cache": "^4.1.1",
     "micro": "^7.3.3",
     "micro-route": "^2.4.0",
-    "proof-of-work": "^3.0.4",
+    "proof-of-work": "^3.0.5",
     "redis": "^2.7.1"
   },
   "devDependencies": {
