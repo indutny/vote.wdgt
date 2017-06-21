@@ -27,7 +27,7 @@ test('file redirect', async (t) => {
   const err = await t.throws(request(url + '/cdn/snippet.js', {
     followRedirect: false
   }));
-  t.is(err.statusCode, 301, 'status code');
+  t.is(err.statusCode, 302, 'status code');
   t.regex(err.response.headers.location, /^\/cdn\/[a-f0-9]{64}\/snippet.js$/,
     'location header');
 });
