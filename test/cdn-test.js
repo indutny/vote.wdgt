@@ -48,7 +48,7 @@ test('HEAD', async (t) => {
 
   t.is(body['content-type'], 'application/javascript;charset=utf-8',
     'proper content-type');
-  t.is(body['cache-control'], 'public, max-age=31536000',
+  t.is(body['cache-control'], 'public, max-age=31536000, immutable',
     'cache-control');
   t.is(typeof body['etag'], 'string',
     'etag');
