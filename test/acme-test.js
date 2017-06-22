@@ -53,16 +53,3 @@ test('unknown challenge', async (t) => {
   const err = await t.throws(request(url + '/.well-known/acme-challenge/2'));
   t.is(err.statusCode, 404, '404');
 });
-
-test('rate limiter', async (t) => {
-  const url = await listen(micro(app()));
-  {
-    const err = await t.throws(request(url + '/.well-known/acme-challenge/2'));
-    t.is(err.statusCode, 404, '404');
-  }
-
-  {
-    const err = await t.throws(request(url + '/.well-known/acme-challenge/2'));
-    t.is(err.statusCode, 400, '400');
-  }
-});
