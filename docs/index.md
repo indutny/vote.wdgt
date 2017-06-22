@@ -12,7 +12,7 @@ Click the button below:
 
 ```html
 <button class="votenow">?</button>
-<script src="https://vote.now.sh/cdn/snippet.js" async></script>
+<script src="https://vote.wdgt.io/cdn/snippet.js" async></script>
 ```
 
 ## Use-cases
