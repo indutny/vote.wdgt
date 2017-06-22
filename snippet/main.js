@@ -2,7 +2,10 @@
 /* global document window XMLHttpRequest Blob localStorage Worker */
 
 const WORKER_SOURCE =
-    require('raw-loader!uglify-loader!../dist/snippet-worker.js');
+    require('raw-loader!uglify-loader?' +
+            '{"compress":{"unsafe":true,"unsafe_math":true,"evaluate":true,' +
+            '"unused":true,"passes":3},"comments":false}' +
+            '!../dist/snippet-worker.js');
 
 const API_URL = 'https://vote.wdgt.io/api/v1';
 const STORAGE_PREFIX = 'votenow/v1/';

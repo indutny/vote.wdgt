@@ -1,5 +1,6 @@
 'use strict';
 
+const webpack = require('webpack');
 const path = require('path');
 
 const DIST = path.join(__dirname, 'dist');
@@ -13,6 +14,20 @@ const loaders = [
   }
 ];
 
+const plugins = [
+  new webpack.optimize.ModuleConcatenationPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      unsafe: true,
+      unsafe_math: true,
+      evaluate: true,
+      unused: true,
+      passes: 3
+    },
+    comments: false
+  })
+];
+
 module.exports = [{
   entry: path.join(SNIPPET, 'worker.js'),
   output: {
@@ -21,7 +36,8 @@ module.exports = [{
   },
   module: {
     loaders
-  }
+  },
+  plugins
 }, {
   entry: [ path.join(SNIPPET, 'main.js') ],
   output: {
@@ -30,5 +46,6 @@ module.exports = [{
   },
   module: {
     loaders
-  }
+  },
+  plugins
 }];

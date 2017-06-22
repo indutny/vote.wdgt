@@ -40,6 +40,6 @@
     "rimraf": "^2.6.1",
     "test-listen": "^1.0.2",
     "uglify-loader": "^2.0.0",
-    "webpack": "^2.6.1"
+    "webpack": "^3.0.0"
   }
 }
