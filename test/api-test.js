@@ -22,7 +22,7 @@ test('homepage redirect', async (t) => {
 
   const err = await t.throws(request(url, { followRedirect: false }));
   t.is(err.statusCode, 301, 'status code');
-  t.is(err.response.headers.location, 'https://indutny.github.io/vote.now/',
+  t.is(err.response.headers.location, 'https://indutny.github.io/vote.wdgt/',
     'location header');
 });
 

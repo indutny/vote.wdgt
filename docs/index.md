@@ -1,4 +1,4 @@
-# vote.now
+# vote.wdgt
 
 Free Proof-of-Work API for fancy Vote Counting widgets.
 
@@ -17,7 +17,7 @@ Click the button below:
 
 ## Use-cases
 
-vote.now widgets are completely free of use (_see [Availability][2] below_).
+vote.wdgt widgets are completely free of use (_see [Availability][2] below_).
 When embedded on the website they will show vote count for the current page.
 Widgets can be inserted into:
 
@@ -80,7 +80,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[0]: https://github.com/indutny/vote.now/issues
+[0]: https://github.com/indutny/vote.wdgt/issues
 [1]: https://github.com/indutny/proof-of-work#technique
-[2]: https://indutny.github.io/vote.now/#availability
-[3]: https://github.com/indutny/vote.now/wiki/User-Styles
+[2]: https://indutny.github.io/vote.wdgt/#availability
+[3]: https://github.com/indutny/vote.wdgt/wiki/User-Styles

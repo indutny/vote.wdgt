@@ -1,5 +1,5 @@
-# vote.now
-[![Build Status](https://secure.travis-ci.org/indutny/vote.now.svg)](http://travis-ci.org/indutny/vote.now)
+# vote.wdgt
+[![Build Status](https://secure.travis-ci.org/indutny/vote.wdgt.svg)](http://travis-ci.org/indutny/vote.wdgt)
 
 Free Proof-of-Work API for fancy Vote Counting widgets.
 
@@ -40,4 +40,4 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[0]: https://indutny.github.io/vote.now/
+[0]: https://indutny.github.io/vote.wdgt/
