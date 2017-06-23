@@ -25,6 +25,7 @@
     "lru-cache": "^4.1.1",
     "micro": "^7.3.3",
     "micro-route": "^2.4.0",
+    "package": "^1.0.1",
     "proof-of-work": "^3.1.0",
     "redis": "^2.7.1"
   },

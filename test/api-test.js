@@ -14,6 +14,7 @@ const app = new vote.App(Object.assign({
   db: new vote.MemoryDB()
 }, CONFIG)).dispatch();
 
+const VERSION = require('package')(module).version;
 const HOME_HASH =
     '252e170cd2962f6ed0f29dc745f712fd9307d75ad59306337e91c90b3a049cdf';
 
@@ -32,6 +33,7 @@ test('/api/v1/', async (t) => {
 
   t.is(body.prefix, CONFIG.prefix, 'correct prefix');
   t.is(body.complexity, CONFIG.complexity, 'correct complexity');
+  t.is(body.version, VERSION, 'correct version');
   t.deepEqual(body.endpoints, {
     '/api/v1/': { method: 'GET' },
     '/api/v1/vote/:id': [
