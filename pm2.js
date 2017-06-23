@@ -12,7 +12,7 @@ const App = require('./').App;
 const PORT = process.env.NODE_PORT || 8000;
 const HOST = process.env.NODE_HOST || '::';
 
-const server = micro(new App(CONFIG)).listen(PORT, HOST, () => {
+const server = micro(new App(CONFIG).dispatch()).listen(PORT, HOST, () => {
   /* eslint-disable no-console */
   console.log('Listening on %j', server.address());
   /* eslint-enable no-console */
