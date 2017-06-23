@@ -18,7 +18,7 @@ const TMP_DIR = path.join(__dirname, 'tmp');
 
 function app() {
   return new vote.App(Object.assign({
-    'acme-root': TMP_DIR,
+    acme: { root: TMP_DIR },
     db: new vote.MemoryDB()
   }, CONFIG)).dispatch();
 }
