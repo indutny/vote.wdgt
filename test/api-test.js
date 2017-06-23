@@ -66,7 +66,7 @@ test('/api/v1/vote/:id', async (t) => {
 
     t.deepEqual(body, {
       prefix: CONFIG.prefix,
-      complexity: CONFIG.complexity,
+      complexity: CONFIG.initialComplexity,
       votes: 0
     }, 'correct GET response');
   }
@@ -135,7 +135,7 @@ test('/api/v1/vote/:id', async (t) => {
     const solver = new pow.Solver();
 
     const nonce = solver.solve(
-      CONFIG.complexity,
+      CONFIG.initialComplexity,
       Buffer.from(CONFIG.prefix, 'hex'));
 
     const body = await request(url, {
