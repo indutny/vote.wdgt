@@ -55,11 +55,12 @@ test('/api/v1/vote/:id', async (t) => {
 
   // Too long ID
   {
-    const body = await request(url + new Array(5).join(HOME_HASH), {
+    const err = await t.throws(request(url + new Array(5).join(HOME_HASH), {
       json: true
-    });
+    }));
 
-    t.deepEqual(body, { error: 'ID overflow' }, 'ID overflow');
+    t.is(err.statusCode, 400);
+    t.deepEqual(err.response.body, { error: 'ID overflow' }, 'ID overflow');
   }
 
   // Normal GET
@@ -75,60 +76,65 @@ test('/api/v1/vote/:id', async (t) => {
 
   // Invalid JSON
   {
-    const body = await request(url, {
+    const err = await t.throws(request(url, {
       method: 'PUT',
       json: true
-    });
+    }));
 
-    t.deepEqual(body, { error: 'Invalid JSON' }, 'invalid JSON');
+    t.is(err.statusCode, 400);
+    t.deepEqual(err.response.body, { error: 'Invalid JSON' }, 'invalid JSON');
   }
 
   // Too long ID
   {
-    const body = await request(url + new Array(5).join(HOME_HASH), {
+    const err = await t.throws(request(url + new Array(5).join(HOME_HASH), {
       method: 'PUT',
       json: true,
       body: {}
-    });
+    }));
 
-    t.deepEqual(body, { error: 'ID overflow' }, 'ID overflow');
+    t.is(err.statusCode, 400);
+    t.deepEqual(err.response.body, { error: 'ID overflow' }, 'ID overflow');
   }
 
   // No nonce
   {
-    const body = await request(url, {
+    const err = await t.throws(request(url, {
       method: 'PUT',
       json: true,
       body: {}
-    });
+    }));
 
-    t.regex(body.error, /ValidationError/);
+    t.is(err.statusCode, 400);
+    t.regex(err.response.body.error, /ValidationError/);
   }
 
   // Invalid nonce
   {
-    const body = await request(url, {
+    const err = await t.throws(request(url, {
       method: 'PUT',
       json: true,
       body: {
         nonce: 'not-hex'
       }
-    });
+    }));
 
-    t.regex(body.error, /ValidationError/);
+    t.is(err.statusCode, 400);
+    t.regex(err.response.body.error, /ValidationError/);
   }
 
   // Incorrect nonce
   {
-    const body = await request(url, {
+    const err = await t.throws(request(url, {
       method: 'PUT',
       json: true,
       body: {
         nonce: 'abcd'
       }
-    });
+    }));
 
-    t.deepEqual(body, { error: 'Invalid nonce' });
+    t.is(err.statusCode, 400);
+    t.deepEqual(err.response.body, { error: 'Invalid nonce' });
   }
 
   let dup;
@@ -155,15 +161,16 @@ test('/api/v1/vote/:id', async (t) => {
 
   // Duplicate nonce
   {
-    const body = await request(url, {
+    const err = await t.throws(request(url, {
       method: 'PUT',
       json: true,
       body: {
         nonce: dup.toString('hex')
       }
-    });
+    }));
 
-    t.deepEqual(body, { error: 'Invalid nonce' });
+    t.is(err.statusCode, 400);
+    t.deepEqual(err.response.body, { error: 'Invalid nonce' });
   }
 
   // Fetch update
@@ -176,4 +183,18 @@ test('/api/v1/vote/:id', async (t) => {
       votes: 1
     }, 'correct GET response');
   }
+});
+
+test('/api/v1/vote/:id buffer OOB', async (t) => {
+  const url = await listen(micro(app)) + '/api/v1/vote/' + HOME_HASH;
+  const big = new Array(1000).join('xxx');
+
+  const err = await t.throws(request(url, {
+    method: 'PUT',
+    json: true,
+    body: big
+  }));
+
+  t.is(err.statusCode, 400);
+  t.deepEqual(err.response.body, { error: 'Invalid JSON' });
 });
