@@ -62,7 +62,7 @@ test('POST without signature', async (t) => {
     json: true,
     body: {},
     headers: {
-      'x-github-event': 'release'
+      'x-github-event': 'create'
     }
   }));
 
@@ -76,7 +76,7 @@ test('POST with unparseable signature', async (t) => {
     method: 'POST',
     json: true,
     headers: {
-      'x-github-event': 'release',
+      'x-github-event': 'create',
       'x-hub-signature': 'ohai'
     },
     body: {}
@@ -92,7 +92,7 @@ test('POST with invalid signature length', async (t) => {
     method: 'POST',
     json: true,
     headers: {
-      'x-github-event': 'release',
+      'x-github-event': 'create',
       'x-hub-signature': 'sha1=abcd'
     },
     body: {}
@@ -108,7 +108,7 @@ test('POST with invalid signature', async (t) => {
     method: 'POST',
     json: true,
     headers: {
-      'x-github-event': 'release',
+      'x-github-event': 'create',
       'x-hub-signature': 'sha1=' +
         crypto.createHash('sha1').update('').digest('hex')
     },
@@ -121,7 +121,8 @@ test('POST with invalid signature', async (t) => {
 
 test('POST with valid signature', async (t) => {
   const post = {
-    release: { tag_name: 'v1.0.0' }
+    ref: 'v100.0.0',
+    ref_type: 'tag'
   };
 
   const url = await listen(micro(app()));
@@ -129,7 +130,7 @@ test('POST with valid signature', async (t) => {
     method: 'POST',
     json: true,
     headers: {
-      'x-github-event': 'release',
+      'x-github-event': 'create',
       'x-hub-signature': sign(JSON.stringify(post))
     },
     body: post
@@ -143,7 +144,7 @@ test('POST with invalid JSON', async (t) => {
   const err = await t.throws(request(url + '/api/v1/github/deploy', {
     method: 'POST',
     headers: {
-      'x-github-event': 'release',
+      'x-github-event': 'create',
       'x-hub-signature': sign('1-1')
     },
     body: '1-1'
@@ -151,4 +152,24 @@ test('POST with invalid JSON', async (t) => {
 
   t.is(err.statusCode, 400);
   t.deepEqual(JSON.parse(err.response.body), { error: 'Invalid JSON' });
+});
+
+test('POST with old version', async (t) => {
+  const post = {
+    ref: 'v0.0.0',
+    ref_type: 'tag'
+  };
+
+  const url = await listen(micro(app()));
+  const body = await request(url + '/api/v1/github/deploy', {
+    method: 'POST',
+    json: true,
+    headers: {
+      'x-github-event': 'create',
+      'x-hub-signature': sign(JSON.stringify(post))
+    },
+    body: post
+  });
+
+  t.deepEqual(body, { ok: true });
 });
