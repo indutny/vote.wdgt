@@ -110,3 +110,17 @@ test('POST with valid signature', async (t) => {
 
   t.deepEqual(body, { ok: true });
 });
+
+test('POST with invalid JSON', async (t) => {
+  const url = await listen(micro(app()));
+  const err = await t.throws(request(url + '/api/v1/github/deploy', {
+    method: 'POST',
+    headers: {
+      'x-hub-signature': sign('1-1')
+    },
+    body: '1-1'
+  }));
+
+  t.is(err.statusCode, 400);
+  t.deepEqual(JSON.parse(err.response.body), { error: 'Invalid JSON' });
+});
