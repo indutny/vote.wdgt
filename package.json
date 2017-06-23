@@ -1,6 +1,6 @@
 {
   "name": "vote.wdgt",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "private": true,
   "description": "Public voting API",
   "main": "lib/vote.js",
