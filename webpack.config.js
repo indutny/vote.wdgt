@@ -42,7 +42,7 @@ module.exports = [{
   entry: [ path.join(SNIPPET, 'main.js') ],
   output: {
     path: DIST,
-    filename: 'snippet.js'
+    filename: 'snippet-v2.js'
   },
   module: {
     loaders

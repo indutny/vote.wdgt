@@ -6,13 +6,13 @@ Free Proof-of-Work API for fancy Vote Counting widgets.
 
 Click the button below:
 
-<button class="votenow">?</button>
+<button class="votewdgt">?</button>
 
 ## Embedding
 
 ```html
-<button class="votenow">?</button>
-<script src="https://vote.wdgt.io/cdn/snippet.js" async></script>
+<button class="votewdgt">?</button>
+<script src="https://vote.wdgt.io/cdn/snippet-v2.js" async></script>
 ```
 
 ## Use-cases
@@ -32,13 +32,14 @@ Widgets can be inserted into:
 No styling is provided by default. However the widget has rich set of classes,
 each describing particular state of it:
 
-* `.votenow` - always present
-* `.votenow-loading` - initial vote count is being loaded
-* `.votenow-ready` - vote count has been loaded
-* `.votenow-computing` - Proof-of-Work is being computed
-* `.votenow-voting` - Proof-of-Work computed, sending data to API endpoint
-* `.votenow-voted` - Vote casted, or voted before
-* `.votenow-error` - Some unexpected server error
+* `.votewdgt` - always present
+* `.votewdgt-init` - dummy state, assigned initially
+* `.votewdgt-loading` - initial vote count is being loaded
+* `.votewdgt-ready` - vote count has been loaded
+* `.votewdgt-computing` - Proof-of-Work is being computed
+* `.votewdgt-voting` - Proof-of-Work computed, sending data to API endpoint
+* `.votewdgt-voted` - Vote casted, or voted before
+* `.votewdgt-error` - Some unexpected server error
 
 A collection of user-supplied styles is available [on this wiki page][3].
 

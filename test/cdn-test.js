@@ -32,6 +32,17 @@ test('file redirect', async (t) => {
     'location header');
 });
 
+test('file redirect v2', async (t) => {
+  const url = await listen(micro(app));
+
+  const err = await t.throws(request(url + '/cdn/snippet-v2.js', {
+    followRedirect: false
+  }));
+  t.is(err.statusCode, 302, 'status code');
+  t.regex(err.response.headers.location, /^\/cdn\/[a-f0-9]{64}\/snippet-v2.js$/,
+    'location header');
+});
+
 test('GET', async (t) => {
   const url = await listen(micro(app));
   const body = await request(url + '/cdn/snippet.js');
