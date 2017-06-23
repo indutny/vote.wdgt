@@ -56,6 +56,52 @@ Since this project is absolutely free to use author can provide only limited
 availability guarantees. If widgets stop working - please file an
 [issue here][0].
 
+## Programmatic API
+
+Widget may be created programmatically too:
+
+```js
+const widget = new VoteWidget('elem-id' /* or DOM node */);
+```
+
+Alternatively completely custom widget class may be created:
+
+```js
+const inherits = require('inherits');
+const Base = VoteWidget.Base;
+
+function CustomWidget() {
+  // Some configuration
+  Base.call(this, /* optional */ 'vote-counter-id');
+}
+inherits(CustomWidget, Base);
+
+CustomWidget.prototype.onStateChange = function onStateChange(state, payload) {
+  // See states below
+};
+
+const instance = new CustomWidget();
+
+// Cast vote:
+instance.vote((err, res) => {
+  // res = { votes: 1 }
+});
+```
+
+Following states are available (they follow CSS classes above closely). Payload
+is missing unless stated explicitly:
+
+* `init`
+* `loading`, `payload=vote-counter-id`
+* `ready`, `payload={ complexity: ..., prefix: ..., votes: ..., voted: ... }`
+* `voting`
+* `computing`, `payload={ votes: next-number-of-votes }`
+* `voted`, `payload={ votes: final-number-of-votes }`
+* `error`, `payload=error`
+
+NOTE: No DOM interactions are included in `Base` class. They have to be
+implemented in `CustomWidget`.
+
 ## LICENSE
 
 This software is licensed under the MIT License.
