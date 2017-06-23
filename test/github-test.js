@@ -39,12 +39,31 @@ test('POST without config', async (t) => {
   t.deepEqual(err.response.body, { error: 'No GitHub hooks are configured' });
 });
 
+test('POST with invalid event type', async (t) => {
+  const url = await listen(micro(app()));
+  const err = await t.throws(request(url + '/api/v1/github/deploy', {
+    method: 'POST',
+    json: true,
+    headers: {
+      'x-github-event': 'push',
+      'x-hub-signature': 'ohai'
+    },
+    body: {}
+  }));
+
+  t.is(err.statusCode, 400);
+  t.deepEqual(err.response.body, { error: 'Invalid x-github-event header' });
+});
+
 test('POST without signature', async (t) => {
   const url = await listen(micro(app()));
   const err = await t.throws(request(url + '/api/v1/github/deploy', {
     method: 'POST',
     json: true,
-    body: {}
+    body: {},
+    headers: {
+      'x-github-event': 'release'
+    }
   }));
 
   t.is(err.statusCode, 400);
@@ -57,6 +76,7 @@ test('POST with unparseable signature', async (t) => {
     method: 'POST',
     json: true,
     headers: {
+      'x-github-event': 'release',
       'x-hub-signature': 'ohai'
     },
     body: {}
@@ -72,6 +92,7 @@ test('POST with invalid signature length', async (t) => {
     method: 'POST',
     json: true,
     headers: {
+      'x-github-event': 'release',
       'x-hub-signature': 'sha1=abcd'
     },
     body: {}
@@ -87,6 +108,7 @@ test('POST with invalid signature', async (t) => {
     method: 'POST',
     json: true,
     headers: {
+      'x-github-event': 'release',
       'x-hub-signature': 'sha1=' +
         crypto.createHash('sha1').update('').digest('hex')
     },
@@ -98,14 +120,19 @@ test('POST with invalid signature', async (t) => {
 });
 
 test('POST with valid signature', async (t) => {
+  const post = {
+    release: { tag_name: 'v1.0.0' }
+  };
+
   const url = await listen(micro(app()));
   const body = await request(url + '/api/v1/github/deploy', {
     method: 'POST',
     json: true,
     headers: {
-      'x-hub-signature': sign(JSON.stringify({}))
+      'x-github-event': 'release',
+      'x-hub-signature': sign(JSON.stringify(post))
     },
-    body: {}
+    body: post
   });
 
   t.deepEqual(body, { ok: true });
@@ -116,6 +143,7 @@ test('POST with invalid JSON', async (t) => {
   const err = await t.throws(request(url + '/api/v1/github/deploy', {
     method: 'POST',
     headers: {
+      'x-github-event': 'release',
       'x-hub-signature': sign('1-1')
     },
     body: '1-1'
