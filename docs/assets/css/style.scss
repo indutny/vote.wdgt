@@ -15,7 +15,7 @@
   }
 }
 
-.votenow {
+.votewdgt {
   display: block;
   margin: 8px auto 0 auto;
   text-align: center;
@@ -30,25 +30,25 @@
   user-select: none;
 }
 
-.votenow.votenow-loading,
-.votenow.votenow-computing,
-.votenow.votenow-voting {
+.votewdgt.votewdgt-loading,
+.votewdgt.votewdgt-computing,
+.votewdgt.votewdgt-voting {
   animation-name: vote-loading;
   animation-direction: alternate;
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
 }
 
-.votenow.votenow-ready:not(:disabled):hover:after {
+.votewdgt.votewdgt-ready:not(:disabled):hover:after {
   font-weight: bold;
   content: ' +1';
 }
 
-.votenow.votenow-voting {
+.votewdgt.votewdgt-voting {
   border: 1px solid #333;
 }
 
-.votenow.votenow-voted {
+.votewdgt.votewdgt-voted {
   border: 1px solid #333;
 }
 
