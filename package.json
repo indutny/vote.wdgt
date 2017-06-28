@@ -20,7 +20,7 @@
     "chokidar": "^1.7.0",
     "compare-versions": "^3.0.1",
     "debug": "^2.6.8",
-    "hash.js": "^1.1.0",
+    "hash.js": "^1.1.2",
     "inherits": "^2.0.3",
     "joi": "^10.6.0",
     "lru-cache": "^4.1.1",
@@ -28,7 +28,8 @@
     "micro-route": "^2.4.0",
     "package": "^1.0.1",
     "proof-of-work": "^3.1.0",
-    "redis": "^2.7.1"
+    "redis": "^2.7.1",
+    "webpack-common-shake": "^1.0.0-alpha0"
   },
   "devDependencies": {
     "ava": "^0.19.1",

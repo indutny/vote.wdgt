@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const ShakePlugin = require('webpack-common-shake').Plugin;
 
 const DIST = path.join(__dirname, 'dist');
 const SNIPPET = path.join(__dirname, 'snippet');
@@ -15,7 +16,7 @@ const loaders = [
 ];
 
 const plugins = [
-  new webpack.optimize.ModuleConcatenationPlugin(),
+  new ShakePlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       unsafe: true,
