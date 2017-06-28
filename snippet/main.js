@@ -52,7 +52,5 @@ Widget.prototype.onStateChange = function onStateChange(state, payload) {
 // Expose
 window.VoteWidget = Widget;
 
-if (typeof document !== 'undefined') {
-  const elems = document.querySelectorAll('.votewdgt');
-  Array.prototype.slice.call(elems).forEach(elem => new Widget(elem));
-}
+const elems = document.querySelectorAll('.votewdgt');
+Array.prototype.slice.call(elems).forEach(elem => new Widget(elem));
