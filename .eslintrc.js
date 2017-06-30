@@ -12,7 +12,18 @@ module.exports = {
   'rules': {
     'indent': [
       'error',
-      2
+      2,
+      {
+        'FunctionDeclaration': {
+          'parameters': 'first'
+        },
+        'FunctionExpression': {
+          'parameters': 'first'
+        },
+        'CallExpression': {
+          'arguments': 'first'
+        }
+      }
     ],
     'linebreak-style': [
       'error',

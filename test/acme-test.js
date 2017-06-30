@@ -40,7 +40,7 @@ test.after(() => {
 
 test('GET challenge', async (t) => {
   fs.writeFileSync(path.join(TMP_DIR, '.well-known', 'acme-challenge', '1'),
-    'hello');
+                   'hello');
 
   const url = await listen(micro(app()));
   const body = await request(url + '/.well-known/acme-challenge/1');

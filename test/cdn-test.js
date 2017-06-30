@@ -29,7 +29,7 @@ test('file redirect', async (t) => {
   }));
   t.is(err.statusCode, 302, 'status code');
   t.regex(err.response.headers.location, /^\/cdn\/[a-f0-9]{64}\/snippet.js$/,
-    'location header');
+          'location header');
 });
 
 test('file redirect v2', async (t) => {
@@ -40,7 +40,7 @@ test('file redirect v2', async (t) => {
   }));
   t.is(err.statusCode, 302, 'status code');
   t.regex(err.response.headers.location, /^\/cdn\/[a-f0-9]{64}\/snippet-v2.js$/,
-    'location header');
+          'location header');
 });
 
 test('GET', async (t) => {
@@ -58,11 +58,10 @@ test('HEAD', async (t) => {
   });
 
   t.is(body['content-type'], 'application/javascript;charset=utf-8',
-    'proper content-type');
+       'proper content-type');
   t.is(body['cache-control'], 'public, max-age=31536000, immutable',
-    'cache-control');
-  t.is(typeof body['etag'], 'string',
-    'etag');
+       'cache-control');
+  t.is(typeof body['etag'], 'string', 'etag');
 });
 
 test('GET deflate', async (t) => {

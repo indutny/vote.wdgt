@@ -24,7 +24,7 @@ test('homepage redirect', async (t) => {
   const err = await t.throws(request(url, { followRedirect: false }));
   t.is(err.statusCode, 302, 'status code');
   t.is(err.response.headers.location, 'https://indutny.github.io/vote.wdgt/',
-    'location header');
+       'location header');
 });
 
 test('/api/v1/', async (t) => {
