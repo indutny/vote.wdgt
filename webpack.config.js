@@ -1,6 +1,7 @@
 'use strict';
 
 const webpack = require('webpack');
+const fs = require('fs');
 const path = require('path');
 const ShakePlugin = require('webpack-common-shake').Plugin;
 
@@ -16,7 +17,11 @@ const loaders = [
 ];
 
 const plugins = [
-  new ShakePlugin(),
+  new ShakePlugin({
+    onGraph: process.env.SHAKE_GRAPH ? (dot) => {
+      fs.writeFileSync(process.env.SHAKE_GRAPH, dot);
+    } : false
+  }),
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       unsafe: true,
