@@ -44,6 +44,6 @@
     "test-listen": "^1.0.2",
     "uglify-loader": "^2.0.0",
     "webpack": "^3.0.0",
-    "webpack-common-shake": "^1.1.1"
+    "webpack-common-shake": "^1.1.3"
   }
 }
